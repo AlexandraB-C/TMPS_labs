@@ -2,13 +2,21 @@
 
 ## Theory
 
-SOLID is a set of five design principles that help us write better, cleaner code. In this lab, we focused on three of them:
+SOLID is an acronym for the first five object-oriented design (OOD) principles by Robert C. Martin (also known as Uncle Bob).
 
-**Single Responsibility (S):** Each class should do only one thing. Think of it like having a toolbox where each tool has a specific job. A hammer shouldn't try to be a screwdriver too.
+These principles establish practices for developing software with considerations for maintaining and extending it as the project grows. Adopting these practices can also help avoid code smells, refactor code, and develop Agile or Adaptive software.
 
-**Open/Closed (O):** Your code should be open for extension but closed for modification. This means you should be able to add new features without breaking or changing existing code.
+SOLID stands for:
 
-**Dependency Injection (D):** Instead of a class creating what it needs internally, we pass things in from outside. It's like ordering ingredients for a recipe instead of making them from scratch every time.
+S - Single-responsibility Principle
+
+O - Open-closed Principle
+
+L - Liskov Substitution Principle
+
+I - Interface Segregation Principle
+
+D - Dependency Inversion Principle
 
 ## Objective
 

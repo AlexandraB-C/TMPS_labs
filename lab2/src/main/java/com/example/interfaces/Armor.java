@@ -1,6 +1,7 @@
 package com.example.interfaces;
 
-import com.example.equipment.Equipment;
+import com.example.Stats;
 
-public interface Armor extends Equipment {
+public interface Armor {
+    void apply(Stats stats);
 }

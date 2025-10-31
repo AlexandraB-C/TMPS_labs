@@ -1,6 +1,6 @@
 package com.example.weapons;
 
-import com.example.domain.stats.Stats;
+import com.example.Stats;
 import com.example.interfaces.Weapon;
 import com.example.domain.damage.DamageType;
 

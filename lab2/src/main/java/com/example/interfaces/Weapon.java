@@ -1,9 +1,10 @@
 package com.example.interfaces;
 
-import com.example.equipment.Equipment;
 import com.example.domain.damage.DamageType;
+import com.example.Stats;
 
-public interface Weapon extends Equipment {
+public interface Weapon {
+    void apply(Stats stats);
     int getDamage();
     DamageType getDamageType();
 }

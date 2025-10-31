@@ -4,20 +4,20 @@ import com.example.Stats;
 import com.example.interfaces.Weapon;
 import com.example.domain.damage.DamageType;
 
-public class Claymore implements Weapon {
+public class Staff implements Weapon {
     @Override
     public void apply(Stats stats) {
-        stats.addStrength(10);
-        stats.addHealth(20);
+        stats.addIntelligence(15);
+        stats.addFaith(5);
     }
 
     @Override
     public int getDamage() {
-        return 45;
+        return 25;
     }
 
     @Override
     public DamageType getDamageType() {
-        return DamageType.PHYSICAL;
+        return DamageType.MAGICAL;
     }
 }

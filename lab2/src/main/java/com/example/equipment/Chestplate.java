@@ -3,9 +3,10 @@ package com.example.equipment;
 import com.example.Stats;
 import com.example.interfaces.Armor;
 
-public class Helm implements Armor {
+public class Chestplate implements Armor {
     @Override
     public void apply(Stats stats) {
-        stats.addHealth(15);
+        stats.addHealth(30);
+        stats.addStrength(5);
     }
 }

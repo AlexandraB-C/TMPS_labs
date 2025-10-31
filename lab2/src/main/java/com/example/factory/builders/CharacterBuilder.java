@@ -10,6 +10,7 @@ import com.example.characters.Warrior;
 import com.example.Stats;
 import com.example.equipment.Equipment;
 import com.example.interfaces.Weapon;
+import com.example.interfaces.Armor;
 
 public class CharacterBuilder {
     private String characterType;
@@ -43,6 +44,11 @@ public class CharacterBuilder {
 
     public CharacterBuilder addWeapon(Weapon weapon) {
         this.equipmentList.add(weapon);
+        return this;
+    }
+
+    public CharacterBuilder addArmor(Armor armor) {
+        this.equipmentList.add(armor);
         return this;
     }
 
@@ -99,11 +105,11 @@ public class CharacterBuilder {
 
         // Equip all equipment
         for (Object equipment : equipmentList) {
-            // Note: This is a simplified implementation
-            // In a real scenario, you'd need to determine the equipment type and slot
-            // For demonstration, we'll assume equipment can be equipped as weapons
             if (equipment instanceof com.example.interfaces.Weapon) {
                 character.equipWeapon((com.example.interfaces.Weapon) equipment);
+            } else if (equipment instanceof com.example.interfaces.Armor) {
+                // For simplicity, equip armor as helmet (could be extended for different slots)
+                character.equipHelmet((com.example.interfaces.Armor) equipment);
             }
         }
 

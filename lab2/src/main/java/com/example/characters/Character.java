@@ -9,7 +9,7 @@ import com.example.interfaces.Weapon;
 import com.example.interfaces.Armor;
 import com.example.interfaces.Accessory;
 
-public abstract class Character {
+public abstract class Character implements Cloneable {
     protected Stats baseStats;
     protected Map<EquipmentSlot, Object> equipmentSlots;
     protected String name;
@@ -69,6 +69,24 @@ public abstract class Character {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public Character clone() {
+        try {
+            Character cloned = (Character) super.clone();
+            // Deep copy baseStats
+            cloned.baseStats = new Stats(this.baseStats);
+            // Shallow copy equipmentSlots (references to equipment objects)
+            cloned.equipmentSlots = new HashMap<>(this.equipmentSlots);
+            // Add " (Copy)" suffix to name
+            if (this.name != null) {
+                cloned.name = this.name + " (Copy)";
+            }
+            return cloned;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("Cloning not supported", e);
+        }
     }
 
     public abstract String getCharacterType();

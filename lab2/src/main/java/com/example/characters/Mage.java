@@ -1,6 +1,6 @@
 package com.example.characters;
 
-import com.example.Stats;
+import com.example.domain.stats.Stats;
 
 public class Mage extends Character {
     public Mage() {

@@ -15,12 +15,14 @@ public class Main {
         Equipment weapon1 = new Daggers();
         mage.equip(weapon1);
         System.out.println("\n+ Equipped Daggers (right hand)");
+        System.out.println("  Damage: " + ((Daggers) weapon1).getDamage() + " " + ((Daggers) weapon1).getDamageType());
         System.out.println(mage.getEffectiveStats());
 
         Equipment weapon2 = new Claymore();
         mage.equip(weapon2);
         System.out.println("\n+ Equipped Claymore (left hand)");
-        System.out.println(mage.getEffectiveStats()); 
+        System.out.println("  Damage: " + ((Claymore) weapon2).getDamage() + " " + ((Claymore) weapon2).getDamageType());
+        System.out.println(mage.getEffectiveStats());
 
         Equipment helm = new Helm();
         mage.equip(helm);

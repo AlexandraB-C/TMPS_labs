@@ -3,7 +3,7 @@ package com.example.characters;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.Stats;
+import com.example.domain.stats.Stats;
 import com.example.equipment.Equipment;
 
 public abstract class Character {

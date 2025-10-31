@@ -75,11 +75,11 @@ public abstract class Character implements Cloneable {
     public Character clone() {
         try {
             Character cloned = (Character) super.clone();
-            // Deep copy baseStats
+            // deep copy stats
             cloned.baseStats = new Stats(this.baseStats);
-            // Shallow copy equipmentSlots (references to equipment objects)
+            // shallow copy equipment
             cloned.equipmentSlots = new HashMap<>(this.equipmentSlots);
-            // Add " (Copy)" suffix to name
+            // add copy suffix to name
             if (this.name != null) {
                 cloned.name = this.name + " (Copy)";
             }

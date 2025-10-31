@@ -8,7 +8,6 @@ public class MageFactory extends AbstractCharacterFactory {
     public Character createCharacter() {
         Character mage = new Mage();
         mage.setName("Mage");
-        // Mages come with staff by default
         mage.equipWeapon(EquipmentFactory.createWeapon("staff"));
         return mage;
     }

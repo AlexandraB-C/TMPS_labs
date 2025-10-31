@@ -4,7 +4,7 @@ import com.example.Stats;
 
 public class Bandit extends Character {
     public Bandit() {
-        super(new Stats(90, 15, 10, 10, 15));  // Balanced, high faith
+        super(new Stats(90, 15, 10, 10, 15));  // balanced, high faith
     }
 
     public Bandit(Stats customStats, String name) {

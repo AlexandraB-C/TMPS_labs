@@ -21,14 +21,14 @@ public class Main {
 
         Character mage = new CharacterBuilder()
             .setCharacterType("Mage")
-            .setName("Sellen")  // Sorceress Sellen from Elden Ring
+            .setName("Sellen")
             .setCustomStats(new Stats(80, 8, 35, 12, 15))
             .addWeapon(EquipmentFactory.createWeapon("staff"))
             .build();
 
         Character warrior = new CharacterBuilder()
             .setCharacterType("Warrior")
-            .setName("Bernahl")  // Knight Bernahl from Elden Ring
+            .setName("Bernahl")
             .setCustomStats(new Stats(120, 30, 8, 12, 8))
             .addWeapon(EquipmentFactory.createWeapon("claymore"))
             .addArmor(EquipmentFactory.createArmor("helm"))

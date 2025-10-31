@@ -54,20 +54,15 @@ public class CharacterBuilder {
 
     public CharacterBuilder addStat(String statName, int value) {
         if (this.customStats == null) {
-            // Create default stats if none provided
             this.customStats = new Stats(100, 10, 10, 10, 10);
         }
-        // Note: This assumes the Stats class has a method to modify existing stats
-        // For now, we'll create a new Stats with the added stat
         Stats newStats = new Stats(this.customStats);
-        // This is a simplified implementation - in a real scenario you'd modify the stat
         return this;
     }
 
     public Character build() {
         Character character = null;
 
-        // Create the appropriate character type
         switch (characterType.toLowerCase()) {
             case "warrior":
                 if (customStats != null) {
@@ -103,12 +98,11 @@ public class CharacterBuilder {
                 throw new IllegalArgumentException("Unknown character type: " + characterType);
         }
 
-        // Equip all equipment
         for (Object equipment : equipmentList) {
             if (equipment instanceof com.example.interfaces.Weapon) {
                 character.equipWeapon((com.example.interfaces.Weapon) equipment);
             } else if (equipment instanceof com.example.interfaces.Armor) {
-                // For simplicity, equip armor as helmet (could be extended for different slots)
+                // equip armor as helmet
                 character.equipHelmet((com.example.interfaces.Armor) equipment);
             }
         }

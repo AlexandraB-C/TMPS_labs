@@ -8,7 +8,7 @@ public class CharacterPrototypeRegistry {
     private static final Map<String, Character> prototypes = new HashMap<>();
 
     static {
-        // Pre-register elite character templates based on Elden Ring lore
+        // pre-register elite templates
         prototypes.put("vyke", CharacterTemplates.createEliteWarrior());
         prototypes.put("azur", CharacterTemplates.createArchmage());
         prototypes.put("vargram", CharacterTemplates.createMasterBandit());

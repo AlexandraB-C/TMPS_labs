@@ -11,7 +11,6 @@ import com.example.interfaces.Armor;
 public class CharacterTemplates {
 
     public static Character createEliteWarrior() {
-        // Vyke, Knight of the Roundtable Hold - legendary warrior
         Stats eliteStats = new Stats(150, 35, 8, 15, 12);
         Character warrior = new Warrior(eliteStats, "Vyke");
 
@@ -27,7 +26,6 @@ public class CharacterTemplates {
     }
 
     public static Character createArchmage() {
-        // Azur, legendary sorcerer of Raya Lucaria
         Stats mageStats = new Stats(80, 8, 40, 12, 20);
         Character mage = new Mage(mageStats, "Azur");
 
@@ -41,7 +39,6 @@ public class CharacterTemplates {
     }
 
     public static Character createMasterBandit() {
-        // Vargram, the Raging Wolf - skilled dual-wielder
         Stats banditStats = new Stats(110, 18, 12, 25, 20);
         Character bandit = new Bandit(banditStats, "Vargram");
 

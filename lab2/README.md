@@ -243,3 +243,7 @@ Notice how the templates have much higher stats than base characters because the
 
 ## Conclusion
 
+By using creational design patterns, we built a character system that's way more flexible than just calling constructors everywhere. The Factory Method means we don't have to know about every class. The Builder lets us set up complex characters piece by piece without dealing with giant constructors that take 15 parameters. And the Prototype pattern? Instead of building legendary characters from scratch every time, we just clone the template.
+The cool part is how easy it becomes to add new stuff. Add the class and one line in the factory. Want to customize a character with specific gear? Chain some builder calls. We are not rewriting existing code, just extending it.
+However, we didn't use everything we built. The Abstract Factory classes (WarriorFactory, MageFactory) exist but never actually run in the main program. We also create equipment inconsistently sometimes through the factory, sometimes directly with constructors.
+If we wanted to add more patterns, a Singleton could manage game settings (so there's only one configuration object shared everywhere). An Object Pool could handle equipment that gets equipped and unequipped frequently, reusing the same objects instead of creating new ones every time. But honestly, for this lab the three main patterns do the job. They show how creational patterns take the mess out of object creation and make the codebase cleaner and easier to work with as it grows.

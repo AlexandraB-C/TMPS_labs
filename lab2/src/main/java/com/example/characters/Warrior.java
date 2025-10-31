@@ -4,7 +4,7 @@ import com.example.Stats;
 
 public class Warrior extends Character {
     public Warrior() {
-        super(new Stats(100, 20, 5, 10, 5));  // High strength, moderate health, low int
+        super(new Stats(100, 20, 5, 10, 5));  // high str, moderate hp, low int
     }
 
     public Warrior(Stats customStats, String name) {

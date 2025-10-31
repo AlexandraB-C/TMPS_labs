@@ -8,7 +8,6 @@ public class WarriorFactory extends AbstractCharacterFactory {
     public Character createCharacter() {
         Character warrior = new Warrior();
         warrior.setName("Warrior");
-        // Warriors come with claymore by default
         warrior.equipWeapon(EquipmentFactory.createWeapon("claymore"));
         return warrior;
     }

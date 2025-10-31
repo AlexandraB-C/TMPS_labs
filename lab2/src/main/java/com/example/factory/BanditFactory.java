@@ -8,7 +8,6 @@ public class BanditFactory extends AbstractCharacterFactory {
     public Character createCharacter() {
         Character bandit = new Bandit();
         bandit.setName("Bandit");
-        // Bandits come with daggers by default
         bandit.equipWeapon(EquipmentFactory.createWeapon("daggers"));
         return bandit;
     }

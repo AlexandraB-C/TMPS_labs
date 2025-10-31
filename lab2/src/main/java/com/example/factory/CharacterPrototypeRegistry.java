@@ -8,10 +8,10 @@ public class CharacterPrototypeRegistry {
     private static final Map<String, Character> prototypes = new HashMap<>();
 
     static {
-        // Pre-register elite character templates
-        prototypes.put("elite-warrior", CharacterTemplates.createEliteWarrior());
-        prototypes.put("archmage", CharacterTemplates.createArchmage());
-        prototypes.put("master-bandit", CharacterTemplates.createMasterBandit());
+        // Pre-register elite character templates based on Elden Ring lore
+        prototypes.put("vyke", CharacterTemplates.createEliteWarrior());
+        prototypes.put("azur", CharacterTemplates.createArchmage());
+        prototypes.put("vargram", CharacterTemplates.createMasterBandit());
     }
 
     public static void registerPrototype(String key, Character prototype) {

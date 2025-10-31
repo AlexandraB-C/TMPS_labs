@@ -11,11 +11,10 @@ import com.example.interfaces.Armor;
 public class CharacterTemplates {
 
     public static Character createEliteWarrior() {
-        // Elite warrior with enhanced stats and full equipment
-        Stats eliteStats = new Stats(150, 35, 8, 15, 12); // High health, strength, moderate others
-        Character warrior = new Warrior(eliteStats, "Elite Warrior");
+        // Vyke, Knight of the Roundtable Hold - legendary warrior
+        Stats eliteStats = new Stats(150, 35, 8, 15, 12);
+        Character warrior = new Warrior(eliteStats, "Vyke");
 
-        // Equip with best gear
         Weapon claymore = EquipmentFactory.createWeapon("claymore");
         Armor helm = EquipmentFactory.createArmor("helm");
         Armor chestplate = EquipmentFactory.createArmor("chestplate");
@@ -28,11 +27,10 @@ public class CharacterTemplates {
     }
 
     public static Character createArchmage() {
-        // Archmage with high intelligence and magical equipment
-        Stats mageStats = new Stats(80, 8, 40, 12, 20); // Low health, high int/magic
-        Character mage = new Mage(mageStats, "Archmage");
+        // Azur, legendary sorcerer of Raya Lucaria
+        Stats mageStats = new Stats(80, 8, 40, 12, 20);
+        Character mage = new Mage(mageStats, "Azur");
 
-        // Equip with magical gear
         Weapon staff = EquipmentFactory.createWeapon("staff");
         Armor helm = EquipmentFactory.createArmor("helm");
 
@@ -43,11 +41,10 @@ public class CharacterTemplates {
     }
 
     public static Character createMasterBandit() {
-        // Master bandit with balanced stats and agile equipment
-        Stats banditStats = new Stats(110, 18, 12, 25, 20); // Balanced, high dexterity/faith
-        Character bandit = new Bandit(banditStats, "Master Bandit");
+        // Vargram, the Raging Wolf - skilled dual-wielder
+        Stats banditStats = new Stats(110, 18, 12, 25, 20);
+        Character bandit = new Bandit(banditStats, "Vargram");
 
-        // Equip with agile gear
         Weapon daggers = EquipmentFactory.createWeapon("daggers");
         Armor helm = EquipmentFactory.createArmor("helm");
 

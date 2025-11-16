@@ -1,7 +1,7 @@
 package com.example;
 
 import com.example.characters.Character;
-import com.example.factory.CharacterFactory;
+import com.example.patterns.facade.GameFacade;
 import com.example.factory.EquipmentFactory;
 import com.example.patterns.decorator.FireEnchantment;
 import com.example.patterns.decorator.HeavyUpgrade;
@@ -12,8 +12,23 @@ import com.example.interfaces.Weapon;
 
 public class Main {
     public static void main(String[] args) {
+        demonstrateFacade();
         demonstrateDecorators();
         demonstrateAdapter();
+    }
+
+    private static void demonstrateFacade() {
+        System.out.println("FACADE PATTERN");
+        System.out.println("Simplified character creation through facade:\n");
+
+        Character basicWarrior = GameFacade.createBasicCharacter("warrior");
+        Character prototypeMage = GameFacade.createFromPrototype("azur");
+        Character customBandit = GameFacade.buildCustomCharacter("bandit", "Rogue", new Stats(110, 15, 10, 20, 15), "daggers", "helm");
+
+        System.out.println("Basic warrior: " + basicWarrior.getEffectiveStats());
+        System.out.println("Prototype mage: " + prototypeMage.getEffectiveStats());
+        System.out.println("Custom bandit: " + customBandit.getEffectiveStats());
+        System.out.println();
     }
 
     private static void demonstrateDecorators() {
@@ -46,7 +61,7 @@ public class Main {
 
         System.out.println("Adapted sword: " + adaptedSword.getDamage() + " " + adaptedSword.getDamageType());
 
-        Character warrior = CharacterFactory.createCharacter("warrior");
+        Character warrior = GameFacade.createBasicCharacter("warrior");
         warrior.equipWeapon(adaptedSword);
 
         System.out.println("Warrior stats after equipping adapted sword:");

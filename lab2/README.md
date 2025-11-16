@@ -1,249 +1,243 @@
-# Creational Design Patterns Lab Report
+# Structural Design Patterns Lab Report
 
 ## Theory
 
-Creational design patterns are solutions that deal with object creation mechanisms. Instead of creating objects directly using constructors, these patterns provide more flexible and reusable ways to instantiate objects. They help us avoid hardcoded dependencies and make the system easier to extend and maintain.
+Structural design patterns are solutions that deal with the composition of classes and objects. They help us organize classes and objects into larger structures while keeping the system flexible and efficient. These patterns focus on how classes and objects are composed to form larger structures.
 
-The main creational design patterns include:
+The main structural design patterns include:
 
-- **Singleton** - Ensures only one instance of a class exists
-- **Builder** - Constructs complex objects step by step
-- **Prototype** - Creates new objects by cloning existing ones
-- **Factory Method** - Defines an interface for creating objects, letting subclasses decide which class to instantiate
-- **Abstract Factory** - Provides an interface for creating families of related objects
+- **Adapter** - Allows incompatible interfaces to work together
+- **Bridge** - Separates abstraction from implementation
+- **Composite** - Treats individual objects and compositions uniformly
+- **Decorator** - Adds responsibilities to objects dynamically
+- **Facade** - Provides a simplified interface to a complex subsystem
+- **Flyweight** - Shares objects to support large numbers efficiently
+- **Proxy** - Provides a placeholder for another object
 
 ## Objectives
 
-1. Study and understand Creational Design Patterns
+1. Study and understand Structural Design Patterns
 2. Choose a domain and define its main classes and entities
-3. Implement at least 3 creational design patterns in a sample project
+3. Implement at least 3 structural design patterns in a sample project
 
 ## Implementation
 
-### 1. Builder Pattern
+### 1. Decorator Pattern
 
-Build complex character objects step-by-step with custom configurations. Creating a character with specific stats, name, and equipment requires many parameters. The Builder pattern lets us construct characters piece by piece in a readable way.
+Add responsibilities to objects dynamically. We want to enhance weapons with enchantments and upgrades without changing their core behavior. The Decorator pattern lets us wrap weapons with additional features like bonus damage or stat boosts.
 
-The `CharacterBuilder` class in `factory/builders/CharacterBuilder.java`:
+The `WeaponDecorator` abstract class in `patterns/decorator/WeaponDecorator.java`:
 
 ```java
-public class CharacterBuilder {
-    private String characterType;
-    private Stats customStats;
-    private List<Object> equipmentList;
-    private String name;
+public abstract class WeaponDecorator implements Weapon {
+    protected Weapon weapon;
 
-    public CharacterBuilder setCharacterType(String type) {
-        this.characterType = type;
-        return this;
+    public WeaponDecorator(Weapon weapon) {
+        this.weapon = weapon;
     }
 
-    public CharacterBuilder setName(String name) {
-        this.name = name;
-        return this;
+    @Override
+    public void apply(Stats stats) {
+        weapon.apply(stats);
     }
 
-    public CharacterBuilder setCustomStats(Stats stats) {
-        this.customStats = stats;
-        return this;
+    @Override
+    public int getDamage() {
+        return weapon.getDamage();
     }
 
-    public CharacterBuilder addWeapon(Weapon weapon) {
-        this.equipmentList.add(weapon);
-        return this;
-    }
-
-    public Character build() {
-        // Creates the character based on accumulated configuration
-        Character character = createCharacterByType();
-        equipAllItems(character);
-        return character;
+    @Override
+    public DamageType getDamageType() {
+        return weapon.getDamageType();
     }
 }
 ```
 
-Each method returns this, allowing us to chain calls together. The `build()` method assembles everything at the end.
+Concrete decorators like `FireEnchantment` in `patterns/decorator/FireEnchantment.java`:
+
+```java
+public class FireEnchantment extends WeaponDecorator {
+    public FireEnchantment(Weapon weapon) {
+        super(weapon);
+    }
+
+    @Override
+    public void apply(Stats stats) {
+        super.apply(stats);
+        stats.addIntelligence(5);
+    }
+
+    @Override
+    public int getDamage() {
+        return super.getDamage() + 10;
+    }
+
+    @Override
+    public DamageType getDamageType() {
+        return DamageType.FIRE;
+    }
+}
+```
+
+Each decorator adds its own bonuses while delegating to the wrapped weapon.
 
 **Example**:
 
 ```java
-Character mage = new CharacterBuilder()
-    .setCharacterType("Mage")
-    .setName("Sellen")
-    .setCustomStats(new Stats(80, 8, 35, 12, 15))
-    .addWeapon(EquipmentFactory.createWeapon("staff"))
-    .build();
+Weapon daggers = EquipmentFactory.createWeapon("daggers");
+Weapon fireDaggers = new FireEnchantment(daggers);
+Weapon heavyFireDaggers = new HeavyUpgrade(fireDaggers);
+Weapon holyHeavyFireDaggers = new HolyUpgrade(heavyFireDaggers);
 ```
 
-This is way cleaner than calling a constructor with 10 parameters. We only set what we need.
+We can stack multiple decorators to create complex weapon combinations.
 
 **Output**:
 
-![ ](img/sel.png)
+[screenshot of console output goes here]
 
-Notice how Sellen's intelligence increased from 35 to 50 after equipping the staff, and Bernahl's stats got boosted by the claymore and helm.
+Notice how the damage increases with each decorator, and the damage type changes based on the outermost enchantment.
 
 ---
 
-### 2. Factory Method Pattern
+### 2. Adapter Pattern
 
-Create objects without specifying their exact class. We don't want the client code to know about every character and equipment class. The factory decides what to instantiate based on a simple string.
+Allow incompatible interfaces to work together. We have an external sword class from a third-party library that doesn't implement our Weapon interface. The Adapter pattern lets us wrap it so it fits into our system.
 
-The `CharacterFactory` class:
+The external sword in `patterns/adapter/external/ExternalSword.java`:
 
 ```java
-public class CharacterFactory {
-    public static Character createCharacter(String type) {
-        switch (type.toLowerCase()) {
-            case "warrior":
-                return new Warrior();
-            case "mage":
-                return new Mage();
-            case "bandit":
-                return new Bandit();
+public class ExternalSword {
+    public void buffStats(Stats stats) {
+        stats.addStrength(8);
+        stats.addDexterity(5);
+    }
+
+    public int getAttackPower() {
+        return 35;
+    }
+
+    public String getElement() {
+        return "lightning";
+    }
+}
+```
+
+The adapter in `patterns/adapter/ExternalSwordAdapter.java`:
+
+```java
+public class ExternalSwordAdapter implements Weapon {
+    private ExternalSword externalSword;
+
+    public ExternalSwordAdapter(ExternalSword externalSword) {
+        this.externalSword = externalSword;
+    }
+
+    @Override
+    public void apply(Stats stats) {
+        externalSword.buffStats(stats);
+    }
+
+    @Override
+    public int getDamage() {
+        return externalSword.getAttackPower();
+    }
+
+    @Override
+    public DamageType getDamageType() {
+        String element = externalSword.getElement();
+        switch (element) {
+            case "lightning":
+                return DamageType.MAGICAL;
             default:
-                throw new IllegalArgumentException("Unknown character type: " + type);
+                return DamageType.PHYSICAL;
         }
     }
 }
 ```
 
-You ask for a "warrior", you get a Warrior object. You don't need to import the Warrior class or know how it is constructed.
-
-The `EquipmentFactory` works the same way:
-
-```java
-public class EquipmentFactory {
-    public static Weapon createWeapon(String type) {
-        switch (type.toLowerCase()) {
-            case "daggers":
-                return new Daggers();
-            case "claymore":
-                return new Claymore();
-            case "staff":
-                return new Staff();
-            default:
-                throw new IllegalArgumentException("Unknown weapon type: " + type);
-        }
-    }
-
-    public static Armor createArmor(String type) {
-        switch (type.toLowerCase()) {
-            case "helm":
-                return new Helm();
-            case "chestplate":
-                return new Chestplate();
-            default:
-                throw new IllegalArgumentException("Unknown armor type: " + type);
-        }
-    }
-}
-```
+The adapter translates between the external interface and our Weapon interface.
 
 **Example**:
 
 ```java
-Character warrior = CharacterFactory.createCharacter("warrior");
-Character mage = CharacterFactory.createCharacter("mage");
-Weapon staff = EquipmentFactory.createWeapon("staff");
+ExternalSword externalSword = new ExternalSword();
+Weapon adaptedSword = new ExternalSwordAdapter(externalSword);
+Character warrior = GameFacade.createBasicCharacter("warrior");
+warrior.equipWeapon(adaptedSword);
 ```
+
+The external sword now works seamlessly with our character system.
 
 **Output**:
 
-![ ](img/factr.png)
+[screenshot of console output goes here]
 
-Each character comes out with their base stats. Warriors are tanky with high strength, mages are fragile but smart, bandits are balanced.
+The adapted sword provides 35 magical damage and boosts strength and dexterity when equipped.
 
 ---
 
-### 3. Prototype Pattern
+### 3. Facade Pattern
 
-Create new objects by cloning existing ones. Sometimes we have pre-configured "template" characters and we want to make copies of them quickly without rebuilding everything from scratch.
+Provide a simplified interface to a complex subsystem. Our character creation system involves multiple factories and builders. The Facade pattern gives clients a single, clean interface to access all creation functionality.
 
-The `Character` class implements `Cloneable`:
+The `GameFacade` class in `patterns/facade/GameFacade.java`:
 
 ```java
-@Override
-public Character clone() {
-    try {
-        Character cloned = (Character) super.clone();
-        cloned.baseStats = new Stats(this.baseStats);
-        // copy equipment slots (they can share equipment references)
-        cloned.equipmentSlots = new HashMap<>(this.equipmentSlots);
-        if (this.name != null) {
-            cloned.name = this.name + " (Copy)";
+public class GameFacade {
+    public static Character createBasicCharacter(String type) {
+        return CharacterFactory.createCharacter(type);
+    }
+
+    public static Character createFromPrototype(String key) {
+        return CharacterPrototypeRegistry.getPrototype(key);
+    }
+
+    public static Character buildCustomCharacter(String type, String name, Stats stats, String weaponType, String armorType) {
+        CharacterBuilder builder = new CharacterBuilder()
+            .setCharacterType(type)
+            .setName(name)
+            .setCustomStats(stats);
+
+        if (weaponType != null) {
+            Weapon weapon = EquipmentFactory.createWeapon(weaponType);
+            builder.addWeapon(weapon);
         }
-        return cloned;
-    } catch (CloneNotSupportedException e) {
-        throw new RuntimeException("Cloning not supported", e);
-    }
-}
-```
 
-`CharacterPrototypeRegistry` stores pre-made character templates:
-
-```java
-public class CharacterPrototypeRegistry {
-    private static final Map<String, Character> prototypes = new HashMap<>();
-
-    static {
-        prototypes.put("vyke", CharacterTemplates.createEliteWarrior());
-        prototypes.put("azur", CharacterTemplates.createArchmage());
-        prototypes.put("vargram", CharacterTemplates.createMasterBandit());
-    }
-
-    public static Character getPrototype(String key) {
-        Character prototype = prototypes.get(key);
-        if (prototype == null) {
-            throw new IllegalArgumentException("Prototype not found: " + key);
+        if (armorType != null) {
+            Armor armor = EquipmentFactory.createArmor(armorType);
+            builder.addArmor(armor);
         }
-        return prototype.clone();
+
+        return builder.build();
     }
 }
 ```
 
-The registry holds the original templates. When you ask for a prototype, it clones it and gives you the copy.
+The facade hides the complexity of coordinating between factories, builders, and registries.
 
-**The Templates**:
-
-`CharacterTemplates` creates preconfigured characters:
+**Example**:
 
 ```java
-public static Character createEliteWarrior() {
-    Stats eliteStats = new Stats(150, 35, 8, 15, 12);
-    Character warrior = new Warrior(eliteStats, "Vyke");
-    
-    warrior.equipWeapon(EquipmentFactory.createWeapon("claymore"));
-    warrior.equipHelmet(EquipmentFactory.createArmor("helm"));
-    warrior.equipChestArmor(EquipmentFactory.createArmor("chestplate"));
-    
-    return warrior;
-}
+Character basicWarrior = GameFacade.createBasicCharacter("warrior");
+Character prototypeMage = GameFacade.createFromPrototype("azur");
+Character customBandit = GameFacade.buildCustomCharacter("bandit", "Rogue", new Stats(110, 15, 10, 20, 15), "daggers", "helm");
 ```
 
-Vyke is a legendary warrior with boosted stats and full equipment.
-
-**Usage Example**:
-
-```java
-Character vyke = CharacterPrototypeRegistry.getPrototype("vyke");
-Character clone1 = vyke.clone();
-
-System.out.println("Original: " + vyke.getName());     // Output: Vyke
-System.out.println("Clone: " + clone1.getName());       // Output: Vyke (Copy)
-```
+Clients don't need to know about the underlying factories or builders.
 
 **Output**:
 
-![ ](img/image.png)
+[screenshot of console output goes here]
 
-Notice how the templates have much higher stats than base characters because they come fully equipped. Vyke has 195 health compared to a basic warrior's 100.
+The facade provides three different ways to create characters with a simple, unified interface.
 
 ---
 
 ## Conclusion
 
-By using creational design patterns, we built a character system that's way more flexible than just calling constructors everywhere. The Factory Method means we don't have to know about every class. The Builder lets us set up complex characters piece by piece without dealing with giant constructors that take 15 parameters. And the Prototype pattern? Instead of building legendary characters from scratch every time, we just clone the template.
-The cool part is how easy it becomes to add new stuff. Add the class and one line in the factory. Want to customize a character with specific gear? Chain some builder calls. We are not rewriting existing code, just extending it.
-However, we didn't use everything we built. The Abstract Factory classes (WarriorFactory, MageFactory) exist but never actually run in the main program. We also create equipment inconsistently sometimes through the factory, sometimes directly with constructors.
-If we wanted to add more patterns, a Singleton could manage game settings (so there's only one configuration object shared everywhere). An Object Pool could handle equipment that gets equipped and unequipped frequently, reusing the same objects instead of creating new ones every time. But honestly, for this lab the three main patterns do the job. They show how creational patterns take the mess out of object creation and make the codebase cleaner and easier to work with as it grows.
+The Decorator pattern made it super easy to add weapon enchantments without messing with the base weapon classes. We can stack fire, heavy, and holy upgrades dynamically. The Adapter pattern was perfect for integrating that external sword - it just worked with our system even though it had a completely different interface. And the Facade cleaned up the client code a ton. Instead of importing five different factories, we just call GameFacade methods.
+
+Adding new features easier, as example u can just extend WeaponDecorator. The facade keeps things simple for whoever uses our system. We didn't have to change much existing code, just wrapped and organized it better.
+
+Honestly, structural patterns are about making things fit together nicely. They solved real problems we had with incompatible interfaces and complex subsystems. The code feels more modular and easier to maintain. For future work, we could add more decorators for different effects, or maybe a Bridge pattern if we want to separate weapon behavior from weapon types. But these three patterns already made our RPG system way more flexible and clean.

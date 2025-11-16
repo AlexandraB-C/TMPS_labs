@@ -94,7 +94,7 @@ We can stack multiple decorators to create complex weapon combinations.
 
 **Output**:
 
-[screenshot of console output goes here]
+![alt text](img/de.png)
 
 Notice how the damage increases with each decorator, and the damage type changes based on the outermost enchantment.
 
@@ -171,7 +171,7 @@ The external sword now works seamlessly with our character system.
 
 **Output**:
 
-[screenshot of console output goes here]
+![alt text](img/ad.png)
 
 The adapted sword provides 35 magical damage and boosts strength and dexterity when equipped.
 
@@ -228,7 +228,7 @@ Clients don't need to know about the underlying factories or builders.
 
 **Output**:
 
-[screenshot of console output goes here]
+![alt text](img/image.png)
 
 The facade provides three different ways to create characters with a simple, unified interface.
 
@@ -236,8 +236,8 @@ The facade provides three different ways to create characters with a simple, uni
 
 ## Conclusion
 
-The Decorator pattern made it super easy to add weapon enchantments without messing with the base weapon classes. We can stack fire, heavy, and holy upgrades dynamically. The Adapter pattern was perfect for integrating that external sword - it just worked with our system even though it had a completely different interface. And the Facade cleaned up the client code a ton. Instead of importing five different factories, we just call GameFacade methods.
+The implementation of structural design patterns significantly enhanced the modularity and extensibility of a system. The Decorator pattern provided dynamic composition of weapon enhancements, allowing runtime addition of responsibilities such as damage bonuses and stat modifications without altering core weapon classes. This pattern's recursive composition enabled stacking multiple enchantments (FireEnchantment + HeavyUpgrade) while maintaining the Open-Closed Principle. By implementing object composition and interface translation, the ExternalSwordAdapter successfully mapped buffStats() to apply(), getAttackPower() to getDamage(), and element strings to DamageType enums, ensuring seamless interoperability.
 
-Adding new features easier, as example u can just extend WeaponDecorator. The facade keeps things simple for whoever uses our system. We didn't have to change much existing code, just wrapped and organized it better.
+GameFacade encapsulated interactions between CharacterFactory, CharacterBuilder, EquipmentFactory, and CharacterPrototypeRegistry, reducing client coupling and improving maintainability. This abstraction layer allowed clients to perform complex operations like buildCustomCharacter() through simple method calls.
 
-Honestly, structural patterns are about making things fit together nicely. They solved real problems we had with incompatible interfaces and complex subsystems. The code feels more modular and easier to maintain. For future work, we could add more decorators for different effects, or maybe a Bridge pattern if we want to separate weapon behavior from weapon types. But these three patterns already made our RPG system way more flexible and clean.
+However, the current implementation lacks the remaining structural patterns: Bridge, Composite, Flyweight, and Proxy. For Bridge, we could separate weapon abstraction from implementation by creating a WeaponAbstraction class that delegates to WeaponImpl interfaces, allowing independent variation of weapon types and behaviors. For Composite, a CharacterGroup class could treat individual characters and groups uniformly for party management. Flyweight could optimize equipment sharing by maintaining a pool of immutable equipment instances. Proxy could add lazy loading for character stats or caching for prototype retrieval. These patterns would further enhance the system's flexibility and performance, bt we just did not do it (.

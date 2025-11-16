@@ -1,90 +1,55 @@
 package com.example;
 
 import com.example.characters.Character;
-import com.example.factory.builders.CharacterBuilder;
 import com.example.factory.CharacterFactory;
 import com.example.factory.EquipmentFactory;
-import com.example.factory.CharacterPrototypeRegistry;
-import com.example.Stats;
+import com.example.patterns.decorator.FireEnchantment;
+import com.example.patterns.decorator.HeavyUpgrade;
+import com.example.patterns.decorator.HolyUpgrade;
+import com.example.patterns.adapter.external.ExternalSword;
+import com.example.patterns.adapter.ExternalSwordAdapter;
+import com.example.interfaces.Weapon;
 
 public class Main {
     public static void main(String[] args) {
-        demonstrateBuilder();
-        demonstrateFactory();
-        demonstratePrototype();
-
+        demonstrateDecorators();
+        demonstrateAdapter();
     }
 
-    private static void demonstrateBuilder() {
-        System.out.println("1. BUILDER PATTERN");
-        System.out.println("Building custom characters with specific configurations:\n");
+    private static void demonstrateDecorators() {
+        System.out.println("DECORATOR PATTERN");
+        System.out.println("Decorating weapons with enchantments and upgrades:\n");
 
-        Character mage = new CharacterBuilder()
-            .setCharacterType("Mage")
-            .setName("Sellen")
-            .setCustomStats(new Stats(80, 8, 35, 12, 15))
-            .addWeapon(EquipmentFactory.createWeapon("staff"))
-            .build();
+        Weapon daggers = EquipmentFactory.createWeapon("daggers");
+        Weapon fireDaggers = new FireEnchantment(daggers);
+        Weapon heavyFireDaggers = new HeavyUpgrade(fireDaggers);
+        Weapon holyHeavyFireDaggers = new HolyUpgrade(heavyFireDaggers);
 
-        Character warrior = new CharacterBuilder()
-            .setCharacterType("Warrior")
-            .setName("Bernahl")
-            .setCustomStats(new Stats(120, 30, 8, 12, 8))
-            .addWeapon(EquipmentFactory.createWeapon("claymore"))
-            .addArmor(EquipmentFactory.createArmor("helm"))
-            .build();
+        System.out.println("Base daggers: " + daggers.getDamage() + " " + daggers.getDamageType());
+        System.out.println("Fire daggers: " + fireDaggers.getDamage() + " " + fireDaggers.getDamageType());
+        System.out.println("Heavy fire daggers: " + heavyFireDaggers.getDamage() + " " + heavyFireDaggers.getDamageType());
+        System.out.println("Holy heavy fire daggers: " + holyHeavyFireDaggers.getDamage() + " " + holyHeavyFireDaggers.getDamageType());
 
-        System.out.println(mage.getName() + " (" + mage.getCharacterType() + ")");
-        System.out.println("  " + mage.getEffectiveStats());
-        System.out.println(warrior.getName() + " (" + warrior.getCharacterType() + ")");
-        System.out.println("  " + warrior.getEffectiveStats());
+        Stats stats = new Stats(100, 10, 10, 10, 10);
+        holyHeavyFireDaggers.apply(stats);
+        System.out.println("\nStats after equipping holy heavy fire daggers:");
+        System.out.println(stats);
         System.out.println();
     }
 
-    private static void demonstrateFactory() {
-        System.out.println("2. FACTORY METHOD PATTERN");
-        System.out.println("Creating characters and equipment using factories:\n");
+    private static void demonstrateAdapter() {
+        System.out.println("ADAPTER PATTERN");
+        System.out.println("Adapting external sword to weapon interface:\n");
 
-        System.out.println("CharacterFactory:");
+        ExternalSword externalSword = new ExternalSword();
+        Weapon adaptedSword = new ExternalSwordAdapter(externalSword);
+
+        System.out.println("Adapted sword: " + adaptedSword.getDamage() + " " + adaptedSword.getDamageType());
+
         Character warrior = CharacterFactory.createCharacter("warrior");
-        Character mage = CharacterFactory.createCharacter("mage");
-        Character bandit = CharacterFactory.createCharacter("bandit");
+        warrior.equipWeapon(adaptedSword);
 
-        System.out.println("  Warrior: " + warrior.getEffectiveStats());
-        System.out.println("  Mage: " + mage.getEffectiveStats());
-        System.out.println("  Bandit: " + bandit.getEffectiveStats());
-
-        System.out.println("\nEquipmentFactory:");
-        System.out.println("  Staff: " + EquipmentFactory.createWeapon("staff").getDamage() +
-            " " + EquipmentFactory.createWeapon("staff").getDamageType() + " damage");
-        System.out.println("  Claymore: " + EquipmentFactory.createWeapon("claymore").getDamage() +
-            " " + EquipmentFactory.createWeapon("claymore").getDamageType() + " damage");
-        System.out.println("  Daggers: " + EquipmentFactory.createWeapon("daggers").getDamage() +
-            " " + EquipmentFactory.createWeapon("daggers").getDamageType() + " damage");
-        System.out.println();
-    }
-
-    private static void demonstratePrototype() {
-        System.out.println("3. PROTOTYPE PATTERN");
-        System.out.println("Cloning pre-configured character templates:\n");
-
-        Character vyke = CharacterPrototypeRegistry.getPrototype("vyke");
-        Character azur = CharacterPrototypeRegistry.getPrototype("azur");
-        Character vargram = CharacterPrototypeRegistry.getPrototype("vargram");
-
-        System.out.println("Templates:");
-        System.out.println("  " + vyke.getName() + ": " + vyke.getEffectiveStats());
-        System.out.println("  " + azur.getName() + ": " + azur.getEffectiveStats());
-        System.out.println("  " + vargram.getName() + ": " + vargram.getEffectiveStats());
-
-        System.out.println("\nCloning:");
-        Character clone1 = vyke.clone();
-        Character clone2 = azur.clone();
-
-        System.out.println("  Original: " + vyke.getName());
-        System.out.println("  Clone: " + clone1.getName());
-        System.out.println("  Original: " + azur.getName());
-        System.out.println("  Clone: " + clone2.getName());
-        System.out.println();
+        System.out.println("Warrior stats after equipping adapted sword:");
+        System.out.println(warrior.getEffectiveStats());
     }
 }

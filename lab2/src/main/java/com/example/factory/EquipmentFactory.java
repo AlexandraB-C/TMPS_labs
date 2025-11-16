@@ -6,7 +6,6 @@ import com.example.weapons.Daggers;
 import com.example.weapons.Claymore;
 import com.example.weapons.Staff;
 import com.example.equipment.Helm;
-import com.example.equipment.Chestplate;
 
 public class EquipmentFactory {
     public static Weapon createWeapon(String type) {
@@ -27,11 +26,9 @@ public class EquipmentFactory {
         switch (type.toLowerCase()) {
             case "helm":
                 return new Helm();
-            case "chestplate":
-                return new Chestplate();
             default:
                 throw new IllegalArgumentException("Unknown armor type: " + type +
-                    ". Supported types: helm, chestplate");
+                    ". Supported types: helm");
         }
     }
 }

@@ -16,11 +16,9 @@ public class CharacterTemplates {
 
         Weapon claymore = EquipmentFactory.createWeapon("claymore");
         Armor helm = EquipmentFactory.createArmor("helm");
-        Armor chestplate = EquipmentFactory.createArmor("chestplate");
 
         warrior.equipWeapon(claymore);
         warrior.equipHelmet(helm);
-        warrior.equipChestArmor(chestplate);
 
         return warrior;
     }

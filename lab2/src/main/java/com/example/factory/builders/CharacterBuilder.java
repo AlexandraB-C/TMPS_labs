@@ -56,47 +56,51 @@ public class CharacterBuilder {
         if (this.customStats == null) {
             this.customStats = new Stats(100, 10, 10, 10, 10);
         }
-        Stats newStats = new Stats(this.customStats);
+        switch (statName.toLowerCase()) {
+            case "health":
+                this.customStats.addHealth(value);
+                break;
+            case "strength":
+                this.customStats.addStrength(value);
+                break;
+            case "intelligence":
+                this.customStats.addIntelligence(value);
+                break;
+            case "dexterity":
+                this.customStats.addDexterity(value);
+                break;
+            case "faith":
+                this.customStats.addFaith(value);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown stat: " + statName);
+        }
         return this;
     }
 
-    public Character build() {
-        Character character = null;
-
-        switch (characterType.toLowerCase()) {
+    private Character createCharacter(String type, Stats custom, String name) {
+        Character character;
+        switch (type.toLowerCase()) {
             case "warrior":
-                if (customStats != null) {
-                    character = new Warrior(customStats, name);
-                } else {
-                    character = new Warrior();
-                    if (name != null) {
-                        character.setName(name);
-                    }
-                }
+                character = (custom != null) ? new Warrior(custom, name) : new Warrior();
                 break;
             case "mage":
-                if (customStats != null) {
-                    character = new Mage(customStats, name);
-                } else {
-                    character = new Mage();
-                    if (name != null) {
-                        character.setName(name);
-                    }
-                }
+                character = (custom != null) ? new Mage(custom, name) : new Mage();
                 break;
             case "bandit":
-                if (customStats != null) {
-                    character = new Bandit(customStats, name);
-                } else {
-                    character = new Bandit();
-                    if (name != null) {
-                        character.setName(name);
-                    }
-                }
+                character = (custom != null) ? new Bandit(custom, name) : new Bandit();
                 break;
             default:
-                throw new IllegalArgumentException("Unknown character type: " + characterType);
+                throw new IllegalArgumentException("Unknown character type: " + type);
         }
+        if (custom == null && name != null) {
+            character.setName(name);
+        }
+        return character;
+    }
+
+    public Character build() {
+        Character character = createCharacter(characterType, customStats, name);
 
         for (Object equipment : equipmentList) {
             if (equipment instanceof com.example.interfaces.Weapon) {

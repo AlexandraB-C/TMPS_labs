@@ -8,15 +8,15 @@ The main idea is to make code more flexible so when things change, you don't hav
 
 Here are the key behavioral patterns:
 
-**Chain of Responsibility** - Passes requests along a chain of handlers. Like a help desk escalating issues to the right person.
+**Chain of Responsibility** - Passes requests along a chain of handlers. 
 
-**Command** - Turns a request into an object. Like queuing game actions or undo/redo for user inputs.
+**Command** - Turns a request into an object.
 
 **Interpreter** - Defines a grammar and parses inputs. Good for scripting languages or config files.
 
-**Iterator** - Provides a way to access elements without exposing internals. Like stepping through a collection.
+**Iterator** - Provides a way to access elements without exposing internals.
 
-**Mediator** - Reduces coupling by having objects communicate through a central hub. Like a chat room coordinator.
+**Mediator** - Reduces coupling by having objects communicate through a central hub.
 
 **Memento** - Captures and restores object states without breaking encapsulation. Like save/load game progress.
 
@@ -26,10 +26,9 @@ Here are the key behavioral patterns:
 
 **Strategy** - Like choosing different tools for different jobs. A character can have different ways to attack, and you can swap them on the fly without changing the character itself.
 
-**Template Method** - Defines a skeleton algorithm, lets subclasses fill in details. Like a game level that has a fixed structure but customizable content.
+**Template Method** - Defines a skeleton algorithm, lets subclasses fill in details.
 
-**Visitor** - Adds new operations to existing classes without changing them. Like adding new effects to different item types.
-
+**Visitor** - Adds new operations to existing classes without changing them.
 
 ## Objectives
 
@@ -51,7 +50,7 @@ We implemented 3 behavioral patterns: Strategy, State, and Observer. Each has it
 
 ### 1. Strategy
 
-The Strategy pattern lets us swap out character attack behaviors at runtime. Warriors start with melee attacks (strength-based damage), but can switch to magic if needed. The character class stays clean - it just has a strategy field it delegates to.
+The Strategy pattern lets us swap out character attack behaviors at runtime. Warriors start with melee attacks (strength-based damage), but can switch to magic if needed. The character class stays clean it just has a strategy field it delegates to.
 
 We created attack strategies in:
 
@@ -73,6 +72,7 @@ public class MeleeAttackStrategy implements IAttackStrategy {
     }
 }
 ```
+strategy calculates melee damage using the attacker’s strength attribute and applies it directly to the target. The logic remains isolated inside the strategy instead of being hardcoded into Character, making it easy to swap to magic or ranged attacks without modifying core logic.
 
 The Character class delegates attacks:
 
@@ -85,12 +85,11 @@ public void attack(Character target) {
     }
 }
 ```
+Delegates execution to whatever strategy is currently assigned. This prevents conditional branching (if warrior then damage = strength) and keeps combat scalable.
 
 ![alt text](img/image%20copy%202.png)
 
-Output shows warriors using melee (strength-based) damaging mages, mages using magic (intelligence-based) damaging warriors. Each attack uses different calculations, proving strategy swapping works without changing Character code.
-
-What we did: Created warriors and mages with different factory-assigned strategies, called attack() multiple times. Expected different damage calculations (warrior uses strength for melee, mage uses intelligence for magic). It worked perfectly - strategy objects handle the logic, Character just delegates, enabling easy runtime changes.
+Characters attacked each other using different damage formulas depending on their strategy. The warrior dealt strength-based melee damage while the mage used intelligence-based magic. No code was changed during execution — only the assigned strategy mattered, proving runtime swapability and clean separation of combat logic.
 
 ### 2. State
 
@@ -118,6 +117,7 @@ public class PoisonedState implements ICharacterState {
     }
 }
 ```
+This state reduces health every time stats are evaluated, simulating a passive effect. Instead of checking conditions manually each frame, the state object itself dictates behavior.
 
 Character integrates state by calling applyStateEffects in getEffectiveStats:
 
@@ -125,12 +125,11 @@ Character integrates state by calling applyStateEffects in getEffectiveStats:
 state.applyStateEffects(effective);
 return effective;
 ```
+Stats requests flow through the current state, so new effects can be added by creating a new class rather than editing Character.
 
 ![alt text](img/image%20copy%205.png)
 
-Output shows health dropping from 100 to 95 when switching to PoisonedState, demonstrating state altering effective stats on-the-fly without external conditions.
-
-What we did: Created a warrior, showed stats in NormalState (unmodified), switched to PoisonedState. Expected health reduction every stats calculation due to ongoing poison effect. It worked - the state object modifies stats dynamically, keeping Character clean and extensible.
+During execution, the character began in NormalState with unchanged stats. Once switched to PoisonedState, each stats check reduced health automatically by 5, without additional method calls or conditions. The change was visible immediately in the output, showing that behavior depends entirely on active state rather than manual checks.
 
 ### 3. Observer
 
@@ -167,6 +166,7 @@ public class ConsoleLoggerObserver implements IObserver {
     }
 }
 ```
+This observer listens for updates and logs useful character data. It works independently = no modifications to Character are required to handle logging.
 
 Character implements ISubject and notifies when state changes:
 
@@ -184,16 +184,16 @@ public void setState(ICharacterState state) {
 }
 ```
 
-Output displays initial health 20, then on state change triggers logger showing updated stats with health 15 and state Poisoned, plus warning about low health under 30. Multiple observers reacted independently without Character knowing their details.
-
-What we did: Created warrior, damaged it to low health, attached observers, changed to PoisonedState. Expected automatic logging and warnings via notifyObservers call. It worked - loose coupling between subject and observers, easy to add new reaction types without modifying Character.
+Changing state automatically notifies subscribers. This keeps the subject completely unaware of who is listening, supporting loose coupling.
 
 ![alt text](img/image%20copy%206.png)
 
+When the warrior’s health dropped, observers instantly responded. The logger printed new stats, while the low-health module raised a warning. Nothing inside Character was modified to support these reactions observers simply reacted on their own, showing clean modularity.
+
 ## Conclusion
 
-The behavioral patterns made our RPG project much more flexible. Strategy lets characters switch attack styles instantly, like a warrior learning magic. State gives characters different behaviors based on status, keeping the code clean instead of huge if-statements everywhere. Observer brings the system to life with automatic reactions, perfect for games where multiple systems need updates.
+Strategy, State and Observer helped make the character system flexible and easier to change. Strategy allowed us to switch attack types without editing the Character class. State moved status effects into separate classes so characters could change behavior at runtime. Observer let other classes react to character changes automatically which kept the core logic clean and not dependent on extra features.
 
-These patterns add flexibility because they separate "what to do" (operation) from "how to do it" (implementation). You can add new strategies or observers without touching existing code, following the open-closed principle. The project easily supports new attack types, status effects, or UI updates just by adding new classes.
+The patterns we used work well because each one has a focused job. Strategy controls how damage is calculated. State controls conditions like poison. Observer controls how the system reacts to changes. This keeps the code easy to extend in the future since we can add new strategies or new states or new observers without rewriting old code.
 
-The separation makes growing the code simple. Want chat logs? Add a ChatLoggerObserver. Need freezing? Add a FreezeState. The core character class stays unchanged, and new features plug in smoothly. This approach makes the codebase future-proof and team-friendly.
+Other behavioral patterns can also be added later if the project grows. Command could be useful if we ever want undoable actions or a turn based action queue. Chain of Responsibility could process damage in steps like armor then buffs then poison. Template Method could define a general combat turn with small parts that subclasses can change. Visitor could apply effects to many character types at once. These patterns are not needed right now but they could help if the game becomes more complex.

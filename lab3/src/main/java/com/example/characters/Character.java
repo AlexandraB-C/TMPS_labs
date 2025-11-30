@@ -8,11 +8,13 @@ import com.example.equipment.EquipmentSlot;
 import com.example.interfaces.Weapon;
 import com.example.interfaces.Armor;
 import com.example.interfaces.Accessory;
+import com.example.patterns.behavioral.strategy.AttackStrategy;
 
 public abstract class Character implements Cloneable {
     protected Stats baseStats;
     protected Map<EquipmentSlot, Object> equipmentSlots;
     protected String name;
+    private AttackStrategy attackStrategy;
 
     public Character(Stats baseStats) {
         this.baseStats = new Stats(baseStats);
@@ -90,4 +92,24 @@ public abstract class Character implements Cloneable {
     }
 
     public abstract String getCharacterType();
+
+    public void takeDamage(int damage) {
+        baseStats.addHealth(-damage);
+    }
+
+    public int getHealth() {
+        return baseStats.getHealth();
+    }
+
+    public void setAttackStrategy(AttackStrategy attackStrategy) {
+        this.attackStrategy = attackStrategy;
+    }
+
+    public void attack(Character target) {
+        if (attackStrategy != null) {
+            attackStrategy.execute(this, target);
+        } else {
+            System.out.println(getName() + " has no attack strategy set.");
+        }
+    }
 }

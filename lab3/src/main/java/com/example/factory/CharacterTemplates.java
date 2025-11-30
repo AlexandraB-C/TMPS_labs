@@ -7,6 +7,9 @@ import com.example.characters.Bandit;
 import com.example.Stats;
 import com.example.interfaces.Weapon;
 import com.example.interfaces.Armor;
+import com.example.patterns.behavioral.strategy.MeleeAttackStrategy;
+import com.example.patterns.behavioral.strategy.MagicAttackStrategy;
+import com.example.patterns.behavioral.strategy.BackstabAttackStrategy;
 
 public class CharacterTemplates {
 
@@ -19,6 +22,8 @@ public class CharacterTemplates {
 
         warrior.equipWeapon(claymore);
         warrior.equipHelmet(helm);
+
+        warrior.setAttackStrategy(new MeleeAttackStrategy());
 
         return warrior;
     }
@@ -33,6 +38,8 @@ public class CharacterTemplates {
         mage.equipWeapon(staff);
         mage.equipHelmet(helm);
 
+        mage.setAttackStrategy(new MagicAttackStrategy());
+
         return mage;
     }
 
@@ -45,6 +52,8 @@ public class CharacterTemplates {
 
         bandit.equipWeapon(daggers);
         bandit.equipHelmet(helm);
+
+        bandit.setAttackStrategy(new BackstabAttackStrategy());
 
         return bandit;
     }

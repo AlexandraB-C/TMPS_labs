@@ -11,6 +11,9 @@ import com.example.Stats;
 import com.example.equipment.Equipment;
 import com.example.interfaces.Weapon;
 import com.example.interfaces.Armor;
+import com.example.patterns.behavioral.strategy.MeleeAttackStrategy;
+import com.example.patterns.behavioral.strategy.MagicAttackStrategy;
+import com.example.patterns.behavioral.strategy.BackstabAttackStrategy;
 
 public class CharacterBuilder {
     private String characterType;
@@ -83,12 +86,15 @@ public class CharacterBuilder {
         switch (type.toLowerCase()) {
             case "warrior":
                 character = (custom != null) ? new Warrior(custom, name) : new Warrior();
+                character.setAttackStrategy(new MeleeAttackStrategy());
                 break;
             case "mage":
                 character = (custom != null) ? new Mage(custom, name) : new Mage();
+                character.setAttackStrategy(new MagicAttackStrategy());
                 break;
             case "bandit":
                 character = (custom != null) ? new Bandit(custom, name) : new Bandit();
+                character.setAttackStrategy(new BackstabAttackStrategy());
                 break;
             default:
                 throw new IllegalArgumentException("Unknown character type: " + type);

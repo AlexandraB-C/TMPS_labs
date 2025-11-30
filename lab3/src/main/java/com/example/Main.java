@@ -2,8 +2,6 @@ package com.example;
 
 import com.example.characters.Character;
 import com.example.patterns.structural.facade.GameFacade;
-import com.example.factory.EquipmentFactory;
-import com.example.weapons.IWeapon;
 import com.example.patterns.behavioral.state.PoisonedState;
 import com.example.patterns.behavioral.observer.ConsoleLoggerObserver;
 import com.example.patterns.behavioral.observer.LowHealthWarningObserver;

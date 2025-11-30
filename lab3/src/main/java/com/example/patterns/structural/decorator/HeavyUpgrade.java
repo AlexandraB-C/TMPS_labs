@@ -1,7 +1,6 @@
 package com.example.patterns.structural.decorator;
 
 import com.example.Stats;
-import com.example.domain.damage.DamageType;
 import com.example.weapons.IWeapon;
 
 public class HeavyUpgrade extends WeaponDecorator {

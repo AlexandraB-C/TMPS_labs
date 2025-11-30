@@ -8,9 +8,9 @@ import com.example.characters.Character;
 import com.example.characters.Mage;
 import com.example.characters.Warrior;
 import com.example.Stats;
-import com.example.equipment.Equipment;
-import com.example.interfaces.Weapon;
-import com.example.interfaces.Armor;
+import com.example.equipment.IEquipment;
+import com.example.weapons.IWeapon;
+import com.example.equipment.IArmor;
 import com.example.patterns.behavioral.strategy.MeleeAttackStrategy;
 import com.example.patterns.behavioral.strategy.MagicAttackStrategy;
 import com.example.patterns.behavioral.strategy.BackstabAttackStrategy;
@@ -40,17 +40,17 @@ public class CharacterBuilder {
         return this;
     }
 
-    public CharacterBuilder addEquipment(Equipment equipment) {
+    public CharacterBuilder addEquipment(IEquipment equipment) {
         this.equipmentList.add(equipment);
         return this;
     }
 
-    public CharacterBuilder addWeapon(Weapon weapon) {
+    public CharacterBuilder addWeapon(IWeapon weapon) {
         this.equipmentList.add(weapon);
         return this;
     }
 
-    public CharacterBuilder addArmor(Armor armor) {
+    public CharacterBuilder addArmor(IArmor armor) {
         this.equipmentList.add(armor);
         return this;
     }
@@ -109,11 +109,11 @@ public class CharacterBuilder {
         Character character = createCharacter(characterType, customStats, name);
 
         for (Object equipment : equipmentList) {
-            if (equipment instanceof com.example.interfaces.Weapon) {
-                character.equipWeapon((com.example.interfaces.Weapon) equipment);
-            } else if (equipment instanceof com.example.interfaces.Armor) {
+            if (equipment instanceof com.example.weapons.IWeapon) {
+                character.equipWeapon((com.example.weapons.IWeapon) equipment);
+            } else if (equipment instanceof com.example.equipment.IArmor) {
                 // equip armor as helmet
-                character.equipHelmet((com.example.interfaces.Armor) equipment);
+                character.equipHelmet((com.example.equipment.IArmor) equipment);
             }
         }
 

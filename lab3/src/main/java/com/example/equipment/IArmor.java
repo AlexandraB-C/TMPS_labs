@@ -1,7 +1,7 @@
-package com.example.interfaces;
+package com.example.equipment;
 
 import com.example.Stats;
 
-public interface Armor {
+public interface IArmor {
     void apply(Stats stats);
 }

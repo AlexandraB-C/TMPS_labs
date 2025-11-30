@@ -2,7 +2,7 @@ package com.example.patterns.behavioral.state;
 
 import com.example.Stats;
 
-public class PoisonedState implements CharacterState {
+public class PoisonedState implements ICharacterState {
     @Override
     public void applyStateEffects(Stats stats) {
         stats.addHealth(-5);

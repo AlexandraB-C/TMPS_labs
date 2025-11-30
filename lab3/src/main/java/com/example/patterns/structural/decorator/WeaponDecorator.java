@@ -1,13 +1,13 @@
 package com.example.patterns.structural.decorator;
 
 import com.example.Stats;
-import com.example.interfaces.Weapon;
+import com.example.weapons.IWeapon;
 import com.example.domain.damage.DamageType;
 
-public abstract class WeaponDecorator implements Weapon {
-    protected Weapon weapon;
+public abstract class WeaponDecorator implements IWeapon {
+    protected IWeapon weapon;
 
-    public WeaponDecorator(Weapon weapon) {
+    public WeaponDecorator(IWeapon weapon) {
         this.weapon = weapon;
     }
 

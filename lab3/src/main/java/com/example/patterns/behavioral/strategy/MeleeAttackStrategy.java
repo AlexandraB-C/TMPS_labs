@@ -2,7 +2,7 @@ package com.example.patterns.behavioral.strategy;
 
 import com.example.characters.Character;
 
-public class MeleeAttackStrategy implements AttackStrategy {
+public class MeleeAttackStrategy implements IAttackStrategy {
     @Override
     public void execute(Character attacker, Character target) {
         int damage = attacker.getEffectiveStats().getStrength();

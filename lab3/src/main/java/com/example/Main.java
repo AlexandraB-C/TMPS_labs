@@ -1,20 +1,18 @@
 package com.example;
 
 import com.example.characters.Character;
-import com.example.patterns.structural.adapter.ExternalSwordAdapter;
-import com.example.patterns.structural.adapter.external.ExternalSword;
-import com.example.patterns.structural.decorator.FireEnchantment;
-import com.example.patterns.structural.decorator.HeavyUpgrade;
-import com.example.patterns.structural.decorator.HolyUpgrade;
 import com.example.patterns.structural.facade.GameFacade;
 import com.example.factory.EquipmentFactory;
-import com.example.interfaces.Weapon;
+import com.example.weapons.IWeapon;
 import com.example.patterns.behavioral.state.PoisonedState;
+import com.example.patterns.behavioral.observer.ConsoleLoggerObserver;
+import com.example.patterns.behavioral.observer.LowHealthWarningObserver;
 
 public class Main {
     public static void main(String[] args) {
         demonstrateStrategy();
         demonstrateState();
+        demonstrateObserver();
     }
 
     private static void demonstrateStrategy() {
@@ -46,6 +44,26 @@ public class Main {
         System.out.println("Stats in NormalState: " + warrior.getEffectiveStats());
         warrior.setState(new PoisonedState());
         System.out.println("Stats in PoisonedState: " + warrior.getEffectiveStats());
+        System.out.println();
+    }
+
+    private static void demonstrateObserver() {
+        System.out.println("OBSERVER PATTERN");
+        System.out.println("Attaching observers to track character changes:\n");
+
+        Character warrior = GameFacade.createBasicCharacter("warrior");
+        warrior.setName("Warrior");
+        warrior.takeDamage(80); // Reduce health to 20 for warning
+        System.out.println("Initial health: " + warrior.getHealth());
+
+        warrior.addObserver(new ConsoleLoggerObserver());
+        warrior.addObserver(new LowHealthWarningObserver());
+
+        warrior.setState(new PoisonedState()); // Triggers notify due to state change
+
+        // Trigger notify due to stats calculation
+        warrior.getEffectiveStats();
+
         System.out.println();
     }
 }

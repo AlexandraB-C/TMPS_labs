@@ -6,8 +6,8 @@ import com.example.factory.builders.CharacterBuilder;
 import com.example.factory.EquipmentFactory;
 import com.example.factory.CharacterPrototypeRegistry;
 import com.example.Stats;
-import com.example.interfaces.Weapon;
-import com.example.interfaces.Armor;
+import com.example.weapons.IWeapon;
+import com.example.equipment.IArmor;
 
 public class GameFacade {
     public static Character createBasicCharacter(String type) {
@@ -25,12 +25,12 @@ public class GameFacade {
             .setCustomStats(stats);
 
         if (weaponType != null) {
-            Weapon weapon = EquipmentFactory.createWeapon(weaponType);
+            IWeapon weapon = EquipmentFactory.createWeapon(weaponType);
             builder.addWeapon(weapon);
         }
 
         if (armorType != null) {
-            Armor armor = EquipmentFactory.createArmor(armorType);
+            IArmor armor = EquipmentFactory.createArmor(armorType);
             builder.addArmor(armor);
         }
 

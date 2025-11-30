@@ -5,8 +5,8 @@ import com.example.characters.Warrior;
 import com.example.characters.Mage;
 import com.example.characters.Bandit;
 import com.example.Stats;
-import com.example.interfaces.Weapon;
-import com.example.interfaces.Armor;
+import com.example.weapons.IWeapon;
+import com.example.equipment.IArmor;
 import com.example.patterns.behavioral.strategy.MeleeAttackStrategy;
 import com.example.patterns.behavioral.strategy.MagicAttackStrategy;
 import com.example.patterns.behavioral.strategy.BackstabAttackStrategy;
@@ -17,8 +17,8 @@ public class CharacterTemplates {
         Stats eliteStats = new Stats(150, 35, 8, 15, 12);
         Character warrior = new Warrior(eliteStats, "Vyke");
 
-        Weapon claymore = EquipmentFactory.createWeapon("claymore");
-        Armor helm = EquipmentFactory.createArmor("helm");
+        IWeapon claymore = EquipmentFactory.createWeapon("claymore");
+        IArmor helm = EquipmentFactory.createArmor("helm");
 
         warrior.equipWeapon(claymore);
         warrior.equipHelmet(helm);
@@ -32,8 +32,8 @@ public class CharacterTemplates {
         Stats mageStats = new Stats(80, 8, 40, 12, 20);
         Character mage = new Mage(mageStats, "Azur");
 
-        Weapon staff = EquipmentFactory.createWeapon("staff");
-        Armor helm = EquipmentFactory.createArmor("helm");
+        IWeapon staff = EquipmentFactory.createWeapon("staff");
+        IArmor helm = EquipmentFactory.createArmor("helm");
 
         mage.equipWeapon(staff);
         mage.equipHelmet(helm);
@@ -47,8 +47,8 @@ public class CharacterTemplates {
         Stats banditStats = new Stats(110, 18, 12, 25, 20);
         Character bandit = new Bandit(banditStats, "Vargram");
 
-        Weapon daggers = EquipmentFactory.createWeapon("daggers");
-        Armor helm = EquipmentFactory.createArmor("helm");
+        IWeapon daggers = EquipmentFactory.createWeapon("daggers");
+        IArmor helm = EquipmentFactory.createArmor("helm");
 
         bandit.equipWeapon(daggers);
         bandit.equipHelmet(helm);

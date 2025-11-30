@@ -1,10 +1,9 @@
 package com.example.weapons;
 
 import com.example.Stats;
-import com.example.interfaces.Weapon;
 import com.example.domain.damage.DamageType;
 
-public class Daggers implements Weapon {
+public class Daggers implements IWeapon {
     @Override
     public void apply(Stats stats) {
         stats.addStrength(5);

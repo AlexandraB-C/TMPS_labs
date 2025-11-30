@@ -2,10 +2,10 @@ package com.example.patterns.structural.decorator;
 
 import com.example.Stats;
 import com.example.domain.damage.DamageType;
-import com.example.interfaces.Weapon;
+import com.example.weapons.IWeapon;
 
 public class HolyUpgrade extends WeaponDecorator {
-    public HolyUpgrade(Weapon weapon) {
+    public HolyUpgrade(IWeapon weapon) {
         super(weapon);
     }
 

@@ -1,14 +1,14 @@
 package com.example.factory;
 
-import com.example.interfaces.Weapon;
-import com.example.interfaces.Armor;
+import com.example.weapons.IWeapon;
+import com.example.equipment.IArmor;
 import com.example.weapons.Daggers;
 import com.example.weapons.Claymore;
 import com.example.weapons.Staff;
 import com.example.equipment.Helm;
 
 public class EquipmentFactory {
-    public static Weapon createWeapon(String type) {
+    public static IWeapon createWeapon(String type) {
         switch (type.toLowerCase()) {
             case "daggers":
                 return new Daggers();
@@ -22,7 +22,7 @@ public class EquipmentFactory {
         }
     }
 
-    public static Armor createArmor(String type) {
+    public static IArmor createArmor(String type) {
         switch (type.toLowerCase()) {
             case "helm":
                 return new Helm();

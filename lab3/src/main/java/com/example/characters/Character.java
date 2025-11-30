@@ -1,23 +1,28 @@
 package com.example.characters;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.example.Stats;
 import com.example.equipment.EquipmentSlot;
-import com.example.interfaces.Weapon;
-import com.example.interfaces.Armor;
-import com.example.interfaces.Accessory;
-import com.example.patterns.behavioral.strategy.AttackStrategy;
-import com.example.patterns.behavioral.state.CharacterState;
+import com.example.weapons.IWeapon;
+import com.example.equipment.IArmor;
+import com.example.equipment.IAccessory;
+import com.example.patterns.behavioral.strategy.IAttackStrategy;
+import com.example.patterns.behavioral.state.ICharacterState;
 import com.example.patterns.behavioral.state.NormalState;
+import com.example.patterns.behavioral.observer.ISubject;
+import com.example.patterns.behavioral.observer.IObserver;
 
-public abstract class Character implements Cloneable {
+public abstract class Character implements ISubject, Cloneable {
     protected Stats baseStats;
     protected Map<EquipmentSlot, Object> equipmentSlots;
     protected String name;
-    private AttackStrategy attackStrategy;
-    private CharacterState state = new NormalState();
+    private IAttackStrategy attackStrategy;
+    private ICharacterState state = new NormalState();
+    private List<IObserver> observers = new ArrayList<>();
 
     public Character(Stats baseStats) {
         this.baseStats = new Stats(baseStats);
@@ -30,39 +35,39 @@ public abstract class Character implements Cloneable {
         this.name = name;
     }
 
-    public void equipWeapon(Weapon weapon) {
+    public void equipWeapon(IWeapon weapon) {
         equipmentSlots.put(EquipmentSlot.WEAPON, weapon);
     }
 
-    public void equipHelmet(Armor helmet) {
+    public void equipHelmet(IArmor helmet) {
         equipmentSlots.put(EquipmentSlot.HELMET, helmet);
     }
 
-    public void equipChestArmor(Armor chestArmor) {
+    public void equipChestArmor(IArmor chestArmor) {
         equipmentSlots.put(EquipmentSlot.CHEST_ARMOR, chestArmor);
     }
 
-    public void equipLegArmor(Armor legArmor) {
+    public void equipLegArmor(IArmor legArmor) {
         equipmentSlots.put(EquipmentSlot.LEG_ARMOR, legArmor);
     }
 
-    public void equipAccessory1(Accessory accessory) {
+    public void equipAccessory1(IAccessory accessory) {
         equipmentSlots.put(EquipmentSlot.ACCESSORY_1, accessory);
     }
 
-    public void equipAccessory2(Accessory accessory) {
+    public void equipAccessory2(IAccessory accessory) {
         equipmentSlots.put(EquipmentSlot.ACCESSORY_2, accessory);
     }
 
     public Stats getEffectiveStats() {
         Stats effective = new Stats(baseStats);
         for (Object equip : equipmentSlots.values()) {
-            if (equip instanceof Weapon) {
-                ((Weapon) equip).apply(effective);
-            } else if (equip instanceof Armor) {
-                ((Armor) equip).apply(effective);
-            } else if (equip instanceof Accessory) {
-                ((Accessory) equip).apply(effective);
+            if (equip instanceof IWeapon) {
+                ((IWeapon) equip).apply(effective);
+            } else if (equip instanceof IArmor) {
+                ((IArmor) equip).apply(effective);
+            } else if (equip instanceof IAccessory) {
+                ((IAccessory) equip).apply(effective);
             }
         }
         state.applyStateEffects(effective);
@@ -105,7 +110,7 @@ public abstract class Character implements Cloneable {
         return baseStats.getHealth();
     }
 
-    public void setAttackStrategy(AttackStrategy attackStrategy) {
+    public void setAttackStrategy(IAttackStrategy attackStrategy) {
         this.attackStrategy = attackStrategy;
     }
 
@@ -117,11 +122,29 @@ public abstract class Character implements Cloneable {
         }
     }
 
-    public void setState(CharacterState state) {
+    public void setState(ICharacterState state) {
         this.state = state;
+        notifyObservers();
     }
 
-    public CharacterState getState() {
+    @Override
+    public void addObserver(IObserver o) {
+        observers.add(o);
+    }
+
+    @Override
+    public void removeObserver(IObserver o) {
+        observers.remove(o);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (IObserver o : observers) {
+            o.update(this);
+        }
+    }
+
+    public ICharacterState getState() {
         return state;
     }
 }

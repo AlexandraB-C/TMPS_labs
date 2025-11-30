@@ -1,9 +1,9 @@
-package com.example.patterns.adapter;
+package com.example.patterns.structural.adapter;
 
 import com.example.Stats;
 import com.example.domain.damage.DamageType;
 import com.example.interfaces.Weapon;
-import com.example.patterns.adapter.external.ExternalSword;
+import com.example.patterns.structural.adapter.external.ExternalSword;
 
 public class ExternalSwordAdapter implements Weapon {
     private ExternalSword externalSword;

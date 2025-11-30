@@ -1,4 +1,4 @@
-package com.example.patterns.adapter.external;
+package com.example.patterns.structural.adapter.external;
 
 import com.example.Stats;
 

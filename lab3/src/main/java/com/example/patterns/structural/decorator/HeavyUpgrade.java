@@ -1,4 +1,4 @@
-package com.example.patterns.decorator;
+package com.example.patterns.structural.decorator;
 
 import com.example.Stats;
 import com.example.domain.damage.DamageType;

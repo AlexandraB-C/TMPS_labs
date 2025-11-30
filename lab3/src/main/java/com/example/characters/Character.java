@@ -9,12 +9,15 @@ import com.example.interfaces.Weapon;
 import com.example.interfaces.Armor;
 import com.example.interfaces.Accessory;
 import com.example.patterns.behavioral.strategy.AttackStrategy;
+import com.example.patterns.behavioral.state.CharacterState;
+import com.example.patterns.behavioral.state.NormalState;
 
 public abstract class Character implements Cloneable {
     protected Stats baseStats;
     protected Map<EquipmentSlot, Object> equipmentSlots;
     protected String name;
     private AttackStrategy attackStrategy;
+    private CharacterState state = new NormalState();
 
     public Character(Stats baseStats) {
         this.baseStats = new Stats(baseStats);
@@ -62,6 +65,7 @@ public abstract class Character implements Cloneable {
                 ((Accessory) equip).apply(effective);
             }
         }
+        state.applyStateEffects(effective);
         return effective;
     }
 
@@ -111,5 +115,13 @@ public abstract class Character implements Cloneable {
         } else {
             System.out.println(getName() + " has no attack strategy set.");
         }
+    }
+
+    public void setState(CharacterState state) {
+        this.state = state;
+    }
+
+    public CharacterState getState() {
+        return state;
     }
 }

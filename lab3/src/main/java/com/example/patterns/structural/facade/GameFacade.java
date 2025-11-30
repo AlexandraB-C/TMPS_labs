@@ -1,4 +1,4 @@
-package com.example.patterns.facade;
+package com.example.patterns.structural.facade;
 
 import com.example.characters.Character;
 import com.example.factory.CharacterFactory;
